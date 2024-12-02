@@ -1,18 +1,19 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from .forms import VentaForm
+from .models import Venta 
 
-# Create your views here.
-
+# Vista para crear una venta
 def crear_venta(request):
     if request.method == 'POST':
         form = VentaForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('lista_ventas')
-        else:
-            form = VentaForm()
+            return redirect('lista_ventas')  # Redirigir a la lista de ventas
+    else:
+        form = VentaForm()  # Crear un formulario vacío si es una petición GET
 
-        return render(request, 'tienda/crear_venta.html', {'form': form})
+    return render(request, 'tienda/crear_venta.html', {'form': form})
+
 
 def lista_ventas(request):
     ventas = Venta.objects.all()
